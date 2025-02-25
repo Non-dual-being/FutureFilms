@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta viewport="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="videoscript.js"></script>
+
+    <title>VideoPlayer</title>
+</head>
+<body class="videoPlayer">
+    <form id="videoform">
+        <div class="videoPlayerContainer">
+            <video id="videoPlayer" width="1080" controls></video>
+        </div>  
+</form>
+<div class="buttonContainer">
+    <button id="Terugknop" onclick="window.location.href = './index.html';">Nieuwe Selectie</button>
+    <button id="shuffleknop" onclick="speelVideos(true);">Shuffle en Speel Opnieuw</button>
+</div>
+
+
+<div  class="customContainer" >
+    <div class="titleBar">Future Controls</div>
+    <div class ="ButtomBar">
+        <button class="customButton" id="playButton">Speel</button>
+        <button class="customButton" id="pauseButton">Pauze</button>
+        <button class="customButton" id="fullscreenButton">Volledig scherm</button>
+    </div>
+</div>
+
+</body>
+</html>
