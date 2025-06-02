@@ -104,7 +104,17 @@ document.addEventListener('DOMContentLoaded', function () {
             const level = this.dataset.level;
             const checkboxes = document.querySelectorAll(`input[type='checkbox'][value='${level}']`);
             checkboxes.forEach(checkbox => {
-                if (!checkbox.disabled) {
+                if (!checkbox.disabled && checkbox.checked !== this.checked) {
+
+                    /**
+                     * this.checked verwijst naar dat all level toggle
+                     * en de checkboxes naar de thema checkboxes
+                     * dus zet je de all level aan dan alle checkbox van dat level aanzetten
+                     * ?maar niet als ie al aanstaat, maar dan hoef je niet nog een keer aan te zetten
+                     * todo: dus deze check checkbox.checked !== this.checked
+                     */
+
+                    
                     checkbox.checked = this.checked;
                     handleCheckboxChange({ target: checkbox }); // Update selectedCheckboxes array
                 }
@@ -200,7 +210,10 @@ function hideHoverMessage() {
 function handleCheckboxChange(event) {
     const { id, checked } = event.target;
     if (checked) {
-        selectedCheckboxes.push(id);
+        if (!selectedCheckboxes.includes(id)){
+            selectedCheckboxes.push(id);
+            /**geen dubbele id toelaten anders lijkt het alsof je over de max selectie gaat terwijl dezelfde id er twee keer inzit */
+        }
         if (selectedCheckboxes.length > MAX_SELECTION) {
             const toUncheck = selectedCheckboxes.shift();
             document.getElementById(toUncheck).checked = false;

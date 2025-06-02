@@ -5,8 +5,8 @@ window.onload = function() {
 function speelVideos(shuffle = false, isIntro = true) {
     let videoLijst = JSON.parse(localStorage.getItem('videoLijst')) || [];
 
-    const introVideo = 'intro.mp4';
-    const outroVideo = 'outro.mp4';
+    const introVideo = 'inout/intro.mp4';
+    const outroVideo = 'inout/outro.mp4';
 
     // Voeg intro en outro toe aan de lijst
     if (isIntro) {
