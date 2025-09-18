@@ -227,6 +227,10 @@ function handleCheckboxChange(event) {
                     "data-info-disabled-tip", 
                     `Selecteer nog 1 categorie naar keuze erbij om de JukeBox te starten`);
                }
+        } else if (!selectedCheckboxes.length) {
+            startContentContainer.setAttribute(
+            "data-info-disabled-tip", 
+            'Selecteer twee categorieën om de JukeBox te starten');
         }
     } else {
         startQuizButton.disabled = false;
