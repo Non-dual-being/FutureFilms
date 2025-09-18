@@ -421,35 +421,36 @@ input[type="checkbox"]:disabled + label {
 .start-knop-content.has-disabled::before {
   content: attr(data-info-disabled-tip);
   position: absolute;
-  left: 0px;
-  top: -40px;
+  top: -50px;
+  left: 50%;
   background: linear-gradient(135deg, #4fc3f7, #81d4fa, #aed581);
-  color: #083344; /* diep donkerblauw-groen */
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5); /* subtiel voor leesbaarheid */
+  color: #083344; 
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
   font-weight: 600;
   font-size: clamp(0.9rem, 1.4vw, 1rem);
   padding: 0.8em 1em;
   border-radius: 10px;
   border: 2px solid #ffffff;
+  text-align: center;
   box-shadow: 0 4px 12px rgba(0,0,0,.25);
   white-space: normal;
   overflow-wrap: break-word;
   display: inline-block;
-  width: 100%;
+  width: max-content;     /* ✅ voorkomt dat hij altijd 100% breed wordt */
+  max-width: 500px;
   z-index: 10;
 
-  opacity: 0;                 /* start */
-  transform: translateY(-8px);
+  opacity: 0;
   transition: opacity 0.35s ease, transform 0.35s ease;
-  pointer-events: none;       /* voorkomt hover loop */
+  pointer-events: none;
 }
 
 /* pijltje */
 .start-knop-content.has-disabled::after {
   content: '';
   position: absolute;
-  left: 5px;
-  top: -4px;
+  left: 15px;
+  top: -14px;
   width: 0; height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
@@ -466,7 +467,7 @@ input[type="checkbox"]:disabled + label {
 .start-knop-content.has-disabled.show-tooltip::before,
 .start-knop-content.has-disabled.show-tooltip::after {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(-50%);
 }
 
 

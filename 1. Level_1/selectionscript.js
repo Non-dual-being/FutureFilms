@@ -213,8 +213,26 @@ function handleCheckboxChange(event) {
 
     if (selectedCheckboxes.length < MIN_SELECTION){
         startQuizButton.disabled = true;
+
+        if (selectedCheckboxes.length === 1){
+               const selectedId = selectedCheckboxes[0];
+               if (selectedId){
+                const selectedCheckbox = document.querySelector(`input[type="checkbox"]#${selectedId}`);
+                startContentContainer.setAttribute(
+                    "data-info-disabled-tip", 
+                    `Selecteer naast ${selectedCheckbox.name} nog 1 andere categorie`);
+
+               } else {
+                    startContentContainer.setAttribute(
+                    "data-info-disabled-tip", 
+                    `Selecteer nog 1 categorie naar keuze erbij om de JukeBox te starten`);
+               }
+        }
     } else {
         startQuizButton.disabled = false;
+        startContentContainer.setAttribute(
+            "data-info-disabled-tip", 
+            'Selecteer twee categorieën om de JukeBox te starten');
     }
     
 }
@@ -458,16 +476,6 @@ if (startContentContainer && startQuizButton) {
   const obs = new MutationObserver(updateDisabledClass);
   obs.observe(startQuizButton, { attributes: true, attributeFilter: ['disabled'] });
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
