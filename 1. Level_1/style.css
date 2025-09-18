@@ -417,6 +417,58 @@ input[type="checkbox"]:disabled + label {
 }
 
 
+/* basisstaat tooltip (onzichtbaar, maar aanwezig) */
+.start-knop-content.has-disabled::before {
+  content: attr(data-info-disabled-tip);
+  position: absolute;
+  left: 0px;
+  top: -40px;
+  background: linear-gradient(135deg, #4fc3f7, #81d4fa, #aed581);
+  color: #083344; /* diep donkerblauw-groen */
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5); /* subtiel voor leesbaarheid */
+  font-weight: 600;
+  font-size: clamp(0.9rem, 1.4vw, 1rem);
+  padding: 0.8em 1em;
+  border-radius: 10px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.25);
+  white-space: normal;
+  overflow-wrap: break-word;
+  display: inline-block;
+  width: 100%;
+  z-index: 10;
+
+  opacity: 0;                 /* start */
+  transform: translateY(-8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;       /* voorkomt hover loop */
+}
+
+/* pijltje */
+.start-knop-content.has-disabled::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: -4px;
+  width: 0; height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #81d4fa;
+  z-index: 10;
+
+  opacity: 0;                 /* start */
+  transform: translateY(-5px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+}
+
+/* toon tooltip bij hover (JS voegt .show-tooltip toe) */
+.start-knop-content.has-disabled.show-tooltip::before,
+.start-knop-content.has-disabled.show-tooltip::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 
 
 .start-container {
@@ -435,7 +487,7 @@ input[type="checkbox"]:disabled + label {
 
 .start-knop-content {
     position: relative;
-    width: 30%;
+    width: 25%;
     display: flex;
     flex-direction: column;
     align-items: center; /* Centreert de knop en afbeelding horizontaal */
@@ -472,6 +524,34 @@ input[type="checkbox"]:disabled + label {
     background-size: 250% 250%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Hover-effect */
 }
+
+
+#StartQuizknop:disabled{
+    cursor: default;
+}
+
+
+
+/* Extra vrolijke hover voor disabled */
+#StartQuizknop:disabled:hover {
+    background: repeating-linear-gradient(
+        -45deg,
+        #b3e5fc,
+        #b3e5fc 12px,
+        #81d4fa 12px,
+        #81d4fa 24px
+    );
+    color: #004d40;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.9);
+    transform: scale(1.02) rotate(-1deg);
+    box-shadow: 0 0 12px rgba(255, 193, 7, 0.6);
+    cursor: default;
+    transition: all 0.5s ease-in-out;
+}
+
+
+
+
 
 
 

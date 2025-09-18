@@ -2,6 +2,8 @@ window.onload = function() {
     speelVideos();
 };
 
+
+
 function speelVideos(shuffle = false, isIntro = true) {
     let videoLijst = JSON.parse(localStorage.getItem('videoLijst')) || [];
 
@@ -28,6 +30,7 @@ function speelVideos(shuffle = false, isIntro = true) {
         const source = document.createElement('source');
         source.setAttribute('src', `./videos/${videoLijst[0]}`);
         source.setAttribute('type', 'video/mp4');
+        console.log(source);
         videoPlayer.innerHTML = '';
         videoPlayer.appendChild(source);
         videoPlayer.load();

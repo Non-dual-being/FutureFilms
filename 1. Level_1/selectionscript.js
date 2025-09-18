@@ -1,3 +1,6 @@
+
+/**constanten */
+
 const THEMES = [
     'Mobiliteit',
     'Energietransitie',
@@ -11,217 +14,13 @@ const THEMES = [
 
 const LEVELS = ['1', '2', '3'];
 const MAX_SELECTION = 8;
+const MIN_SELECTION = 2;
+const startQuizButton = document.getElementById('StartQuizknop');
+const startContentContainer = document.querySelector('.start-knop-content');
+
+
 let selectedCheckboxes = [];
 let hoverTimeout;
-
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('themesForm');
-    const fragment = document.createDocumentFragment(); //om rendering te verbeteren
-
-    // Eerst de niveau toggles toevoegen
-    const levelHeaderDiv = document.createElement('div');
-    levelHeaderDiv.className = 'theme-row'; // Dezelfde class voor consistentie
-
-    const themesLabel = document.createElement('label');
-    themesLabel.className = 'themes-label';
-    themesLabel.textContent = 'Selector';
-    levelHeaderDiv.appendChild(themesLabel);
-
-    const levelTogglesDiv = document.createElement('div');
-    levelTogglesDiv.className = 'level-toggles';
-    LEVELS.forEach(level => {
-        const input = document.createElement('input');
-        input.type = 'checkbox';
-        input.id = `niv${level}`;
-        input.className = 'level-toggle';
-        input.dataset.level = level;
-
-        // Controleer of alle thema's beschikbaar zijn voor dit niveau
-        if (!isLevelAvailable(level)) {
-            input.disabled = true;
-        }
-
-        const toggleLabel = document.createElement('label');
-        toggleLabel.htmlFor = `niv${level}`;
-        toggleLabel.textContent = ""; //hier stond level
-
-        if (!input.disabled) {
-        levelTogglesDiv.appendChild(input);
-        levelTogglesDiv.appendChild(toggleLabel);};
-    });
-    levelHeaderDiv.appendChild(levelTogglesDiv);
-    fragment.appendChild(levelHeaderDiv);
-
-    THEMES.forEach((theme) => {
-        const themeDiv = document.createElement('div');
-        themeDiv.className = 'theme-row';
-
-        const label = document.createElement('label');
-        label.textContent = theme;
-        themeDiv.appendChild(label);
-
-        LEVELS.forEach((level) => {
-            const input = document.createElement('input');
-            input.type = 'checkbox';
-            input.id = theme + level;
-            input.name = theme;
-            input.value = level;
-
-            // Check if there are videos available for this theme and level
-            if (!beschikbareVideos[theme] || !beschikbareVideos[theme][level] || beschikbareVideos[theme][level].length === 0) {
-                input.disabled = true;
-                input.classList.add('disabled-checkbox');
-            } else {
-                input.addEventListener('change', handleCheckboxChange);
-                input.classList.add('enabled-checkbox');
-                const levelLabel = document.createElement('label');
-                levelLabel.htmlFor = input.id;
-                 levelLabel.textContent = ""; //hier stond level
-    
-                themeDiv.appendChild(input);
-                themeDiv.appendChild(levelLabel);
-            }
-
-          
-        });
-
-        fragment.appendChild(themeDiv);
-    });
-
-    form.appendChild(fragment);
-
-    function isLevelAvailable(level) {
-        return THEMES.every(theme => beschikbareVideos[theme] && beschikbareVideos[theme][level] && beschikbareVideos[theme][level].length > 0);
-    }
-
-    addHoverListeners(); // Voeg deze toe na de elementen zijn aangemaakt
-    addLevelToggleHoverListeners();
-
-    // Level toggle logica
-    const levelToggles = document.querySelectorAll('.level-toggle');
-    levelToggles.forEach(toggle => {
-        toggle.addEventListener('change', function () {
-            const level = this.dataset.level;
-            const checkboxes = document.querySelectorAll(`input[type='checkbox'][value='${level}']`);
-            checkboxes.forEach(checkbox => {
-                if (!checkbox.disabled && checkbox.checked !== this.checked) {
-
-                    /**
-                     * this.checked verwijst naar dat all level toggle
-                     * en de checkboxes naar de thema checkboxes
-                     * dus zet je de all level aan dan alle checkbox van dat level aanzetten
-                     * ?maar niet als ie al aanstaat, maar dan hoef je niet nog een keer aan te zetten
-                     * todo: dus deze check checkbox.checked !== this.checked
-                     */
-
-                    
-                    checkbox.checked = this.checked;
-                    handleCheckboxChange({ target: checkbox }); // Update selectedCheckboxes array
-                }
-            });
-        });
-    });
-
-    // Updaten van level toggle checkboxes op checkbox wijzigingen
-    const allCheckboxes = document.querySelectorAll('input[type="checkbox"][name]');
-    allCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            const level = this.value;
-            const levelToggle = document.querySelector(`#niv${level}`);
-            if (!this.checked) {
-                levelToggle.checked = false;
-            } else {
-                const allOfLevel = document.querySelectorAll(`input[type='checkbox'][value='${level}']:not(:disabled)`);
-                const allChecked = Array.from(allOfLevel).every(cb => cb.checked);
-                levelToggle.checked = allChecked;
-            }
-        });
-    });
-});
-
-function addHoverListeners() {
-    const disabledCheckboxes = document.querySelectorAll('.disabled-checkbox');
-    disabledCheckboxes.forEach(checkbox => {
-        const label = checkbox.nextElementSibling;
-
-        checkbox.addEventListener('mouseenter', () => scheduleHoverMessage('Nog geen FutureFilm beschikbaar', checkbox));
-        label.addEventListener('mouseenter', () => scheduleHoverMessage('Nog geen FutureFilm beschikbaar', label));
-
-        checkbox.addEventListener('mouseleave', cancelHoverMessage);
-        label.addEventListener('mouseleave', cancelHoverMessage);
-    });
-}
-
-function scheduleHoverMessage(message, element) {
-    clearTimeout(hoverTimeout);
-    hoverTimeout = setTimeout(() => showHoverMessage(message, element), 300); // Voeg een vertraging van 300 ms toe
-}
-
-function cancelHoverMessage() {
-    clearTimeout(hoverTimeout);
-    hideHoverMessage();
-}
-
-function addLevelToggleHoverListeners() {
-    const levelMessages = {
-        '1': 'Niveau Basisonderwijs',
-        '2': 'Niveau VO onderbouw',
-        '3': 'Niveau VO bovenbouw'
-    };
-
-    const levelToggles = document.querySelectorAll('.level-toggle');
-    levelToggles.forEach(toggle => {
-        const level = toggle.dataset.level;
-
-        toggle.addEventListener('mouseenter', () => scheduleHoverMessage(levelMessages[level], toggle));
-        toggle.nextElementSibling.addEventListener('mouseenter', () => scheduleHoverMessage(levelMessages[level], toggle.nextElementSibling));
-
-        toggle.addEventListener('mouseleave', cancelHoverMessage);
-        toggle.nextElementSibling.addEventListener('mouseleave', cancelHoverMessage);
-    });
-}
-
-function showHoverMessage(message, element) {
-    let hoverMessageElement = document.querySelector('.hover-message');
-    if (!hoverMessageElement) {
-        hoverMessageElement = document.createElement('div');
-        hoverMessageElement.className = 'hover-message';
-        document.body.appendChild(hoverMessageElement);
-    }
-    hoverMessageElement.textContent = message;
-    hoverMessageElement.style.display = 'block';
-    hoverMessageElement.style.opacity = '1';
-
-    const rect = element.getBoundingClientRect();
-    hoverMessageElement.style.left = `${rect.left + window.scrollX}px`;
-    hoverMessageElement.style.top = `${rect.top + window.scrollY - 30}px`; // 30 pixels boven het element
-}
-
-function hideHoverMessage() {
-    const hoverMessageElement = document.querySelector('.hover-message');
-    if (hoverMessageElement) {
-        hoverMessageElement.style.opacity = '0';
-        setTimeout(() => {
-            hoverMessageElement.style.display = 'none';
-        }, 300); // Wacht tot de overgang voltooid is
-    }
-}
-
-function handleCheckboxChange(event) {
-    const { id, checked } = event.target;
-    if (checked) {
-        if (!selectedCheckboxes.includes(id)){
-            selectedCheckboxes.push(id);
-            /**geen dubbele id toelaten anders lijkt het alsof je over de max selectie gaat terwijl dezelfde id er twee keer inzit */
-        }
-        if (selectedCheckboxes.length > MAX_SELECTION) {
-            const toUncheck = selectedCheckboxes.shift();
-            document.getElementById(toUncheck).checked = false;
-        }
-    } else {
-        selectedCheckboxes = selectedCheckboxes.filter(selectedId => selectedId !== id);
-    }
-}
 
 const beschikbareVideos = {
     "Mobiliteit": {
@@ -305,6 +104,122 @@ const beschikbareVideos = {
     },
 };
 
+
+/**functies */
+
+//disabled klasse toggle functie 
+
+function updateDisabledClass(){
+    const rendered = (startContentContainer && startQuizButton);
+    if (!rendered) return
+
+    if (startQuizButton.disabled) {
+        startContentContainer.classList.add('has-disabled')
+    } else {
+         startContentContainer.remove('has-disabled', 'show-tooltip');
+    }
+
+}
+
+function addHoverListeners() {
+    const disabledCheckboxes = document.querySelectorAll('.disabled-checkbox');
+    disabledCheckboxes.forEach(checkbox => {
+        const label = checkbox.nextElementSibling;
+
+        /**next sibling is elementen op het zelfde niveau  */
+
+        checkbox.addEventListener('mouseenter', () => scheduleHoverMessage('Nog geen FutureFilm beschikbaar', checkbox));
+        label.addEventListener('mouseenter', () => scheduleHoverMessage('Nog geen FutureFilm beschikbaar', label));
+
+        checkbox.addEventListener('mouseleave', cancelHoverMessage);
+        label.addEventListener('mouseleave', cancelHoverMessage);
+    });
+}
+
+function scheduleHoverMessage(message, element) {
+    clearTimeout(hoverTimeout);
+    hoverTimeout = setTimeout(() => showHoverMessage(message, element), 300); // Voeg een vertraging van 300 ms toe
+}
+
+function cancelHoverMessage() {
+    clearTimeout(hoverTimeout);
+    hideHoverMessage();
+}
+
+function addLevelToggleHoverListeners() {
+    const levelMessages = {
+        '1': 'Niveau Basisonderwijs',
+        '2': 'Niveau VO onderbouw',
+        '3': 'Niveau VO bovenbouw'
+    };
+
+    const levelToggles = document.querySelectorAll('.level-toggle');
+    levelToggles.forEach(toggle => {
+        const level = toggle.dataset.level;
+
+        toggle.addEventListener('mouseenter', () => scheduleHoverMessage(levelMessages[level], toggle));
+        toggle.nextElementSibling.addEventListener('mouseenter', () => scheduleHoverMessage(levelMessages[level], toggle.nextElementSibling));
+
+        toggle.addEventListener('mouseleave', cancelHoverMessage);
+        toggle.nextElementSibling.addEventListener('mouseleave', cancelHoverMessage);
+    });
+}
+
+function showHoverMessage(message, element) {
+    let hoverMessageElement = document.querySelector('.hover-message');
+    if (!hoverMessageElement) {
+        hoverMessageElement = document.createElement('div');
+        hoverMessageElement.className = 'hover-message';
+        document.body.appendChild(hoverMessageElement);
+    }
+    hoverMessageElement.textContent = message;
+    hoverMessageElement.style.display = 'block';
+    hoverMessageElement.style.opacity = '1';
+
+    const rect = element.getBoundingClientRect();
+    hoverMessageElement.style.left = `${rect.left + window.scrollX}px`;
+    hoverMessageElement.style.top = `${rect.top + window.scrollY - 30}px`; // 30 pixels boven het element
+}
+
+function hideHoverMessage() {
+    const hoverMessageElement = document.querySelector('.hover-message');
+    if (hoverMessageElement) {
+        hoverMessageElement.style.opacity = '0';
+        setTimeout(() => {
+            hoverMessageElement.style.display = 'none';
+        }, 300); // Wacht tot de overgang voltooid is
+    }
+}
+
+function handleCheckboxChange(event) {
+    const { id, checked } = event.target;
+
+    if (checked) {
+        if (!selectedCheckboxes.includes(id)){
+            selectedCheckboxes.push(id);
+            /**geen dubbele id toelaten anders lijkt het alsof je over de max selectie gaat terwijl dezelfde id er twee keer inzit */
+        }
+
+
+
+
+        if (selectedCheckboxes.length > MAX_SELECTION) {
+            const toUncheck = selectedCheckboxes.shift();
+            document.getElementById(toUncheck).checked = false;
+        } 
+    } else {
+        selectedCheckboxes = selectedCheckboxes.filter(selectedId => selectedId !== id);
+    }
+
+    if (selectedCheckboxes.length < MIN_SELECTION){
+        startQuizButton.disabled = true;
+    } else {
+        startQuizButton.disabled = false;
+    }
+    
+}
+
+
 function showWarningMessage(message) {
     const messageElement = document.createElement('div');
     messageElement.className = 'warning-message';
@@ -316,10 +231,14 @@ function showWarningMessage(message) {
     }, 5000); // Verwijder de melding na 5000 milliseconden (5 seconden)
 }
 
+function isLevelAvailable(level) {
+        return THEMES.every(theme => beschikbareVideos[theme] && beschikbareVideos[theme][level] && beschikbareVideos[theme][level].length > 0);
+}
+
+
 function submitSelection(event) {
     if (selectedCheckboxes.length === 0) {
         showWarningMessage('Selecteer ten minste 1 checkbox om de quiz te starten.');
-        console.log(selectedCheckboxes);
         return; // Stop de functie als er geen selecties zijn gemaakt
     }
 
@@ -344,10 +263,14 @@ function submitSelection(event) {
 
     if (Object.keys(selectedThemes).length === 1) {
         // Vind een willekeurig thema om toe te voegen dat niet het al geselecteerde thema is
-        const beschikbareThemas = THEMES.filter(t => !selectedThemes.hasOwnProperty(t));
+        const beschikbareThemas = THEMES.filter(thema => !selectedThemes.hasOwnProperty(thema));
+
+        /**hasownproperty controleer de eigen waarde dus de sleutels van selectedThemes, maar niet de nested */
+
         const randomThema = beschikbareThemas[Math.floor(Math.random() * beschikbareThemas.length)];
         // Voeg dit thema toe met alleen niveau '1'
         selectedThemes[randomThema] = ['1'];
+        /** structuur  'mobiliteit': ['1','2'], 'biodiversiteit': ['1'] */
     }
 
     opslaanGeselecteerdeVideos(selectedThemes); // Aanroepen van de nieuwe functie.
@@ -369,6 +292,8 @@ function opslaanGeselecteerdeVideos(selectedThemes) {
         if (selectedThemes[theme].length > 0) {
             // Willekeurige startindex binnen de beschikbare niveaus van het thema
             niveauIndexen[theme] = Math.floor(Math.random() * selectedThemes[theme].length);
+
+            /**bij 'Mobiliteit' : ['1', '2'] kies ie dus een random index */
         }
     });
 
@@ -417,12 +342,7 @@ function opslaanGeselecteerdeVideos(selectedThemes) {
     localStorage.setItem('videoLijst', JSON.stringify(eindLijst)); // Opslaan in localStorage
 }
 
-window.addEventListener('load', function () {
-    const loadingScreen = document.getElementById('loadingScreen');
-    if (loadingScreen) {
-        loadingScreen.style.display = 'none';
-    }
-});
+
 
 function downloadPDF() {
     var pdfLink = document.createElement('a');
@@ -434,6 +354,175 @@ function downloadPDF() {
     document.body.removeChild(pdfLink);
 }
 
+
+/**opbouwen van de pagina met het selectie menu */
+
+
+const form = document.getElementById('themesForm');
+const fragment = document.createDocumentFragment(); //om rendering te verbeteren
+
+// Eerst de niveau toggles toevoegen
+const levelHeaderDiv = document.createElement('div');
+levelHeaderDiv.className = 'theme-row'; // Dezelfde class voor consistentie
+
+const themesLabel = document.createElement('label');
+themesLabel.className = 'themes-label';
+themesLabel.textContent = 'Selector';
+levelHeaderDiv.appendChild(themesLabel);
+
+const levelTogglesDiv = document.createElement('div');
+levelTogglesDiv.className = 'level-toggles';
+LEVELS.forEach(level => {
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.id = `niv${level}`;
+    input.className = 'level-toggle';
+    input.dataset.level = level;
+
+    // Controleer of alle thema's beschikbaar zijn voor dit niveau
+    if (!isLevelAvailable(level)) {
+        input.disabled = true;
+    }
+
+    const toggleLabel = document.createElement('label');
+    toggleLabel.htmlFor = `niv${level}`;
+    toggleLabel.textContent = ""; //hier stond level
+
+    if (!input.disabled) {
+    levelTogglesDiv.appendChild(input);
+    levelTogglesDiv.appendChild(toggleLabel);};
+});
+levelHeaderDiv.appendChild(levelTogglesDiv);
+fragment.appendChild(levelHeaderDiv);
+
+THEMES.forEach((theme) => {
+    const themeDiv = document.createElement('div');
+    themeDiv.className = 'theme-row';
+
+    const label = document.createElement('label');
+    label.textContent = theme;
+    themeDiv.appendChild(label);
+
+    LEVELS.forEach((level) => {
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.id = theme + level;
+        input.name = theme;
+        input.value = level;
+
+        // Check if there are videos available for this theme and level
+        if (!beschikbareVideos[theme] || !beschikbareVideos[theme][level] || beschikbareVideos[theme][level].length === 0) {
+            input.disabled = true;
+            input.classList.add('disabled-checkbox');
+        } else {
+            input.addEventListener('change', handleCheckboxChange);
+            input.classList.add('enabled-checkbox');
+            const levelLabel = document.createElement('label');
+            levelLabel.htmlFor = input.id;
+                levelLabel.textContent = ""; //hier stond level
+
+            themeDiv.appendChild(input);
+            themeDiv.appendChild(levelLabel);
+        }
+
+        
+    });
+
+    fragment.appendChild(themeDiv);
+});
+
+form.appendChild(fragment);
+
+    
+addHoverListeners(); // Voeg deze toe na de elementen zijn aangemaakt
+addLevelToggleHoverListeners();
+
+if (startContentContainer && startQuizButton) {
+  const updateDisabledClass = () => {
+    if (startQuizButton.disabled) startContentContainer.classList.add('has-disabled');
+    else startContentContainer.classList.remove('has-disabled', 'show-tooltip');
+  };
+
+  // initial state
+  updateDisabledClass();
+
+  // hover in/out → tooltip tonen/verbergen
+  startQuizButton.addEventListener('mouseenter', () => {
+    if (startQuizButton.disabled) startContentContainer.classList.add('show-tooltip');
+  });
+  startQuizButton.addEventListener('mouseleave', () => {
+    startContentContainer.classList.remove('show-tooltip');
+  });
+
+  // als je in je app de disabled-property wijzigt, vang dat op
+  const obs = new MutationObserver(updateDisabledClass);
+  obs.observe(startQuizButton, { attributes: true, attributeFilter: ['disabled'] });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Level toggle logica
+const levelToggles = document.querySelectorAll('.level-toggle');
+levelToggles.forEach(toggle => {
+    toggle.addEventListener('change', function () {
+        const level = this.dataset.level;
+        const checkboxes = document.querySelectorAll(`input[type='checkbox'][value='${level}']`);
+        checkboxes.forEach(checkbox => {
+            if (!checkbox.disabled && checkbox.checked !== this.checked) {
+
+                /**
+                 * this.checked verwijst naar dat all level toggle
+                 * en de checkboxes naar de thema checkboxes
+                 * dus zet je de all level aan dan alle checkbox van dat level aanzetten
+                 * ?maar niet als ie al aanstaat, maar dan hoef je niet nog een keer aan te zetten
+                 * todo: dus deze check checkbox.checked !== this.checked
+                 */
+
+                
+                checkbox.checked = this.checked;
+                handleCheckboxChange({ target: checkbox }); // Update selectedCheckboxes array
+            }
+        });
+    });
+});
+
+
+    // Updaten van level toggle checkboxes op checkbox wijzigingen
+const allCheckboxes = document.querySelectorAll('input[type="checkbox"][name]');
+allCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+        const level = this.value;
+        const levelToggle = document.querySelector(`#niv${level}`);
+        if (!this.checked) {
+            levelToggle.checked = false;
+        } else {
+            const allOfLevel = document.querySelectorAll(`input[type='checkbox'][value='${level}']:not(:disabled)`);
+            const allChecked = Array.from(allOfLevel).every(cb => cb.checked);
+            levelToggle.checked = allChecked;
+        }
+    });
+});
+
+
+
+
 document.addEventListener('wheel', function (event) {
     if (event.ctrlKey) { event.preventDefault(); }
 }, { passive: false });
+
+window.addEventListener('load', function () {
+    const loadingScreen = document.getElementById('loadingScreen');
+    if (loadingScreen) {
+        loadingScreen.style.display = 'none';
+    }
+});

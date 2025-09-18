@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script src="selectionscript.js"></script>
+    <script defer src="selectionscript.js"></script>
     <title>Jukebox Future Films</title>
 </head>
 <body class="futurefilms">
@@ -16,7 +16,7 @@
         <div class="intro-text">
             <h2>
                 <span class="main-text">Selecteer en start de Quiz</span>
-                <span class="subtitle">Klik op de checkboxes om thema's te selecteren</span>
+                <span class="subtitle">Klik op de checkboxes om minimaal twee categorieën te selecteren</span>
             </h2>
         </div>
         <form id="themesForm">
@@ -26,10 +26,23 @@
             <button onclick="downloadPDF()" id="Downloadknop">Download spelbord</button>
         </div> 
     </div>
-    <div class="start-container">
-        <div class="start-knop-content">
-            <img class="startknopimg" src="./Future_Films_website_knop.png" alt="startquiz">
-            <button onclick="submitSelection(event)" id="StartQuizknop">Start Quiz</button>
+    <div 
+        class="start-container"
+    >
+        <div 
+            class="start-knop-content"
+            data-info-disabled-tip="Selecteer twee categorieën om de Jukebox te starten"
+        >
+            <img 
+                class="startknopimg" 
+                src="./Future_Films_website_knop.png" 
+                alt="startquiz"
+            >
+            <button 
+                onclick="submitSelection(event)" 
+                id="StartQuizknop"
+                disabled
+            >Start Quiz</button>
         </div>
     </div>
 <footer>
