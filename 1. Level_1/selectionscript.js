@@ -477,6 +477,10 @@ if (startContentContainer && startQuizButton) {
   });
 
   // als je in je app de disabled-property wijzigt, vang dat op
+
+/**
+ * dus er vander iets aan disabled -> updateClass uitvoeren 
+ */
   const obs = new MutationObserver(updateDisabledClass);
   obs.observe(startQuizButton, { attributes: true, attributeFilter: ['disabled'] });
 }

@@ -1279,3 +1279,12 @@ button#Downloadknop {
 
     
 }
+
+/* optioneel: respecteer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .start-knop-content.has-disabled::before,
+  .start-knop-content.has-disabled::after {
+    transition: none;
+    transform: none;
+  }
+}

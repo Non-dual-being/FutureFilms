@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'DarkForest';
+    src: url('./dark_forest/darkforest.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+:root {
+    --color-primary-dark: #152036;
+    --color-primary-medium: #304878;
+    --color-primary-light: #3A5078;
+    --color-text-light: #F7FFF6;
+    --color-background-light: #F4F4F8;
+    --font-main: 'DarkForest', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    /* ... andere globale body stijlen ... */
+}
