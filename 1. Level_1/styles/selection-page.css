@@ -1,0 +1,169 @@
+/* ============================================= */
+/*          MOBILE-FIRST BASIS (tot 768px)       */
+/* ============================================= */
+
+/* Mobile portrait (default) */
+body.futurefilms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  background-image: url('../assets/achtergrond_FutureFilms_selectionpage.png');
+  background-position: top center;
+  background-repeat: repeat-y;     /* herhaal alleen verticaal */
+  background-size: 300vw auto;     /* schaal in de breedte, hoogte auto (dat wil hier zeggen dat de hoogte in verhouding tot de breedte netjes meeschaalt en dus niet uit verhouding raakt */
+  background-color: #0f1b2f;       /* fallback kleur */
+}
+
+header, footer {
+    width: 100%;
+    height: auto;
+    display: flex;
+    background-color: var(--color-primary-dark);
+    color: var(--color-white);
+    text-align: center;
+    position: fixed;
+    z-index: 100;
+}
+
+header {
+    top: 0;
+    bottom: auto;
+    padding: 10px 0; /*[top down] - [left right] */
+    width: 100%;
+    height: var(--selection-header-h);
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+}
+
+footer {
+    inset: auto 0 0 0; /*shorthand top: auto, right: 0, bottom 0, left: 0*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: var(--selection-footer-h);
+    padding: var(--selection-footer-pad-y);
+    overflow: hidden;
+}
+
+footer .icons {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 2vw, 20px);
+    height: 100%;
+}
+
+footer .icons .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    aspect-ratio: 1; /*vierkant*/
+}
+
+footer .icons .icon img {
+    height: 100%;
+    width: auto;
+    display: block;
+}
+
+.selection-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    flex-grow: 1; /* Neemt alle beschikbare ruimte in */
+    width: 95%;
+    height: auto;
+    margin-top: calc(var(--selection-header-h) + 1rem);
+    max-height: calc((var(--vh) * 100) - (var(--selection-header-h) + var(--selection-footer-h) + 2rem));
+    padding: var(--selection-mainContainer-pad);
+    overflow-y: auto; /* Alleen deze container scrollt */
+    border: 10px solid var(--selection-border-color--main);
+    background-color: var(--selection-bg-mainContainer);
+    box-shadow: var(--selection-border-shadow--main);
+}
+
+.start-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    position: fixed;
+    bottom: var(--selection-footer-h);
+    top: auto;
+    left: 0;
+    right: 0;
+    height: auto;
+    width: auto;
+}
+
+.start-knop-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    position: relative;
+    width: auto;
+    height: min(10vh, 100px);
+    pointer-events: auto;
+}
+
+.start-knop-content .startknopimg {
+    position: absolute;
+    bottom: 0;
+    width: auto;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+
+}
+
+.intro-text{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: auto;
+}
+
+.intro-text h2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    column-gap: 0.2rem;
+    width: 100%;
+    height: auto;
+    color: var(--selection-bg-text-color-darkBlue);
+    background: linear-gradient(to right, var(--selection-bg-text-color-darkBlue), var(--selection-bg-text-color-lightBlue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.intro-text h2 span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    text-align: center;
+}
+
+.intro-text h2 span.main-text{
+    font-size: var(--selection-font-size-introText--h2---mobile);
+    text-shadow: var(--selection-bg-text-shadow-blue-trans);    
+}
+
+.intro-text h2 span.subtitle {
+    font-size: var(--selection-font-size-introText--h2--Sub---mobile);
+    color: var(--selection-bg-text-color-lightBlueShade);
+    text-shadow: var(--selection-bg-text-shadow-blue-trans--Sub);
+}
+

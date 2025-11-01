@@ -1,3 +1,4 @@
+import CSSVARS from './cssGlobals.js';
 
 /**constanten */
 
@@ -104,6 +105,12 @@ const beschikbareVideos = {
     },
 };
 
+const {
+    displayNone,
+    loaderHidden
+    
+} = CSSVARS;
+
 
 /**functies */
 
@@ -119,6 +126,22 @@ function updateDisabledClass(){
          startContentContainer.remove('has-disabled', 'show-tooltip');
     }
 
+}
+
+function handlePageLoad() {
+    const loadingScreen = document.getElementById('loadingScreen');
+
+    if (!loadingScreen) {
+        console.warn('loadingscreen with spinner was not found');
+        return;
+    }
+
+    loadingScreen.classList.add(loaderHidden);
+
+    setTimeout(() => {
+        loadingScreen.classList.add(displayNone);
+        
+    }, 500);
 }
 
 function addHoverListeners() {
@@ -368,7 +391,7 @@ function opslaanGeselecteerdeVideos(selectedThemes) {
 
 function downloadPDF() {
     var pdfLink = document.createElement('a');
-    pdfLink.href = 'spelbord_future_films.pdf';
+    pdfLink.href = './../assets/spelbord_future_films.pdf';
     pdfLink.download = 'spelbord_future_films.pdf';
     pdfLink.target = '_blank';
     document.body.appendChild(pdfLink);
@@ -476,6 +499,8 @@ if (startContentContainer && startQuizButton) {
     startContentContainer.classList.remove('show-tooltip');
   });
 
+  startQuizButton.addEventListener('click', submitSelection);
+
   // als je in je app de disabled-property wijzigt, vang dat op
 
 /**
@@ -531,14 +556,8 @@ allCheckboxes.forEach(checkbox => {
 
 
 
-
 document.addEventListener('wheel', function (event) {
     if (event.ctrlKey) { event.preventDefault(); }
 }, { passive: false });
 
-window.addEventListener('load', function () {
-    const loadingScreen = document.getElementById('loadingScreen');
-    if (loadingScreen) {
-        loadingScreen.style.display = 'none';
-    }
-});
+window.addEventListener('load', handlePageLoad);

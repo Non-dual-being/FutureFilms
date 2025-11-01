@@ -89,7 +89,6 @@ footer {
     width: 100%;
     height: auto;
     max-width: max(20px, 3vw);
-    min-width: max(20px, 3vw);
     margin: 0 18px;
 }
 
@@ -98,7 +97,6 @@ footer {
     top: 10000px;
     left: 10000px;
 }
-
 
 
 .center-container {
