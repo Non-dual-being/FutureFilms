@@ -145,7 +145,7 @@ function handlePageLoad() {
 }
 
 function addHoverListeners() {
-    const disabledCheckboxes = document.querySelectorAll('.disabled-checkbox');
+    const disabledCheckboxes = document.querySelectorAll('.themes-form__checkbox--disabled');
     disabledCheckboxes.forEach(checkbox => {
         const label = checkbox.nextElementSibling;
 
@@ -176,7 +176,7 @@ function addLevelToggleHoverListeners() {
         '3': 'Niveau VO bovenbouw'
     };
 
-    const levelToggles = document.querySelectorAll('.level-toggle');
+    const levelToggles = document.querySelectorAll('.themes-form__level-toggle');
     levelToggles.forEach(toggle => {
         const level = toggle.dataset.level;
 
@@ -408,20 +408,20 @@ const fragment = document.createDocumentFragment(); //om rendering te verbeteren
 
 // Eerst de niveau toggles toevoegen
 const levelHeaderDiv = document.createElement('div');
-levelHeaderDiv.className = 'theme-row'; // Dezelfde class voor consistentie
+levelHeaderDiv.className = 'themes-form__row'; // Dezelfde class voor consistentie
 
 const themesLabel = document.createElement('label');
-themesLabel.className = 'themes-label';
+themesLabel.className = 'themes-form__label';
 themesLabel.textContent = 'Selector';
 levelHeaderDiv.appendChild(themesLabel);
 
 const levelTogglesDiv = document.createElement('div');
-levelTogglesDiv.className = 'level-toggles';
+levelTogglesDiv.className = 'themes-form__level-toggles';
 LEVELS.forEach(level => {
     const input = document.createElement('input');
     input.type = 'checkbox';
     input.id = `niv${level}`;
-    input.className = 'level-toggle';
+    input.className = 'themes-form__level-toggle';
     input.dataset.level = level;
 
     // Controleer of alle thema's beschikbaar zijn voor dit niveau
@@ -442,7 +442,7 @@ fragment.appendChild(levelHeaderDiv);
 
 THEMES.forEach((theme) => {
     const themeDiv = document.createElement('div');
-    themeDiv.className = 'theme-row';
+    themeDiv.className = 'themes-form__row';
 
     const label = document.createElement('label');
     label.textContent = theme;
@@ -458,10 +458,10 @@ THEMES.forEach((theme) => {
         // Check if there are videos available for this theme and level
         if (!beschikbareVideos[theme] || !beschikbareVideos[theme][level] || beschikbareVideos[theme][level].length === 0) {
             input.disabled = true;
-            input.classList.add('disabled-checkbox');
+            input.classList.add('themes-form__checkbox--disabled');
         } else {
             input.addEventListener('change', handleCheckboxChange);
-            input.classList.add('enabled-checkbox');
+            input.classList.add('themes-form__checkbox--enabled');
             const levelLabel = document.createElement('label');
             levelLabel.htmlFor = input.id;
                 levelLabel.textContent = ""; //hier stond level
@@ -513,7 +513,7 @@ if (startContentContainer && startQuizButton) {
 
 
     // Level toggle logica
-const levelToggles = document.querySelectorAll('.level-toggle');
+const levelToggles = document.querySelectorAll('.themes-form__level-toggle');
 levelToggles.forEach(toggle => {
     toggle.addEventListener('change', function () {
         const level = this.dataset.level;
@@ -526,7 +526,7 @@ levelToggles.forEach(toggle => {
                  * en de checkboxes naar de thema checkboxes
                  * dus zet je de all level aan dan alle checkbox van dat level aanzetten
                  * ?maar niet als ie al aanstaat, maar dan hoef je niet nog een keer aan te zetten
-                 * todo: dus deze check checkbox.checked !== this.checked
+                 * todo: dus deze check checkbox.checked !== this.checked hierboven
                  */
 
                 

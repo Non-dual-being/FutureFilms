@@ -202,7 +202,7 @@ footer {
     font-size: max(20px, 1.2vw);
     background: linear-gradient(to right, 
         #2B305F 50%, 
-        rgb(232, 232, 232, 0.1) 40%,
+        rgba(232, 232, 232, 0.1) 40%,
         rgba(255, 255, 255, 0) 50%, 
         rgb(232, 232, 232) 80%
     ),
@@ -967,14 +967,14 @@ video {
     }
 
     /* General styling for labels within theme rows */
-.theme-row label {
-    margin-right: 20px;
-    white-space: nowrap;
-    position: relative;
-    display: inline-block;
-    font-size: max(15px, 1.1vw);
-    justify-content: center;
-}
+    .theme-row label {
+        margin-right: 20px;
+        white-space: nowrap;
+        position: relative;
+        display: inline-block;
+        font-size: max(15px, 1.1vw);
+        justify-content: center;
+    }
 
     .theme-row:first-of-type label {
         margin-right: 45px; /* Custom margin for the first theme row */
@@ -1048,16 +1048,16 @@ video {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Hover-effect */
     }
     
-.downloadContainer {
-    position: absolute;
-    bottom: -5%; /* Ensures the div stands slightly higher from the bottom, depending on the screen size */
-    left: -10%; /* Ensures the div comes a bit to the right from the left side, depending on the screen size */
-    padding: 10px; /* Optional, for extra space within the div */
-    z-index: 1; /* Ensures the div is not covered by other elements */
-    transform: translate(-103%, 15%); /* Moves the div 20% to the left and 20% down */
-}
+    .downloadContainer {
+        position: absolute;
+        bottom: -5%; /* Ensures the div stands slightly higher from the bottom, depending on the screen size */
+        left: -10%; /* Ensures the div comes a bit to the right from the left side, depending on the screen size */
+        padding: 10px; /* Optional, for extra space within the div */
+        z-index: 1; /* Ensures the div is not coverd by other elements */
+        transform: translate(-103%, 15%); /* Moves the div 20% to the left and 20% down */
+    }
 
-    
+        
     .center-container::-webkit-scrollbar {
         width: 10px; /* Adds a scrollbar with a width of 10px */
     }
