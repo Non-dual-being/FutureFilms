@@ -207,6 +207,21 @@ body {
     }
 }
 
+
+/* --- VOEG DEZE KEYFRAMES TOE AAN JE CSS (bijv. onderaan) --- */
+@keyframes bgDriftCalm {
+  0%   { background-position: 0% 40%, 60% 60%; }
+  50%  { background-position: 100% 60%, 40% 40%; }
+  100% { background-position: 0% 40%, 60% 60%; }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    .selection-main {
+        animation: none;
+    }
+}
+
 /** --- UTILITY CLASSES --- */
 .d-none {
     display: none;

@@ -401,27 +401,34 @@ function downloadPDF() {
 
 
 /**opbouwen van de pagina met het selectie menu */
-
-
 const form = document.getElementById('themesForm');
-const fragment = document.createDocumentFragment(); //om rendering te verbeteren
+//om rendering te verbeteren
+const fragment = document.createDocumentFragment(); 
 
-// Eerst de niveau toggles toevoegen
-const levelHeaderDiv = document.createElement('div');
-levelHeaderDiv.className = 'themes-form__row'; // Dezelfde class voor consistentie
+/* ------------------------------------------------------ */
+/* Stap 1: De "Level Selector" rij genereren              */
+/* ------------------------------------------------------ */
 
-const themesLabel = document.createElement('label');
-themesLabel.className = 'themes-form__label';
-themesLabel.textContent = 'Selector';
-levelHeaderDiv.appendChild(themesLabel);
+//main div levelSelector
+const levelSelectorRow = document.createElement('div');
+levelSelectorRow.className = 'themes-form__row themes-form__row--level-selector'; 
 
-const levelTogglesDiv = document.createElement('div');
-levelTogglesDiv.className = 'themes-form__level-toggles';
+//label for levelselector
+const levelSelectorLabel = document.createElement('label');
+levelSelectorLabel.className = 'themes-form__label';
+levelSelectorLabel.textContent = 'Selector';
+levelSelectorRow.appendChild(levelSelectorLabel);
+
+//container voor de controls (checkbox inputs)
+const levelTogglesContainer = document.createElement('div');
+levelTogglesContainer.className = 'themes-form__controls';
 LEVELS.forEach(level => {
+    const checkboxId = `niv${level}`;
+
     const input = document.createElement('input');
     input.type = 'checkbox';
-    input.id = `niv${level}`;
-    input.className = 'themes-form__level-toggle';
+    input.id = checkboxId;
+    input.className = 'themes-form__checkbox themes-form__level-toggle';
     input.dataset.level = level;
 
     // Controleer of alle thema's beschikbaar zijn voor dit niveau
@@ -429,51 +436,80 @@ LEVELS.forEach(level => {
         input.disabled = true;
     }
 
-    const toggleLabel = document.createElement('label');
-    toggleLabel.htmlFor = `niv${level}`;
-    toggleLabel.textContent = ""; //hier stond level
+    const label = document.createElement('label');
+    label.htmlFor = checkboxId;
+    label.className = 'themes-form__checkbox-label';
+    label.textContent = ""; //hier stond level
 
     if (!input.disabled) {
-    levelTogglesDiv.appendChild(input);
-    levelTogglesDiv.appendChild(toggleLabel);};
+    levelTogglesContainer.appendChild(input);
+    levelTogglesContainer.appendChild(label);};
 });
-levelHeaderDiv.appendChild(levelTogglesDiv);
-fragment.appendChild(levelHeaderDiv);
+levelSelectorRow.appendChild(levelTogglesContainer);
+fragment.appendChild(levelSelectorRow);
+
+/* ------------------------------------------------------ */
+/* Stap 2: Alle Thema-rijen genereren                     */
+/* ------------------------------------------------------ */
 
 THEMES.forEach((theme) => {
-    const themeDiv = document.createElement('div');
-    themeDiv.className = 'themes-form__row';
+    const themeRow = document.createElement('div');
+    themeRow.className = 'themes-form__row';
 
+    //hoofdlabel met naam van het thema
     const label = document.createElement('label');
     label.textContent = theme;
-    themeDiv.appendChild(label);
+    themeRow.appendChild(label);
 
+    const themeControlsContainer = document.createElement('div');
+    themeControlsContainer.className = 'themes-form__controls';
+
+    const levelCheckboxContainer = document.createElement('div');
+    levelCheckboxContainer.className = 'themes-form__level-checkboxes';
+    
     LEVELS.forEach((level) => {
-        const input = document.createElement('input');
-        input.type = 'checkbox';
-        input.id = theme + level;
-        input.name = theme;
-        input.value = level;
+        const checkboxId = `${theme}${level}`;
+        const isLevelAvailable = (
+            beschikbareVideos[theme] 
+                && 
+            beschikbareVideos[theme][level]
+                &&
+            beschikbareVideos[theme][level].length
+        )
 
-        // Check if there are videos available for this theme and level
-        if (!beschikbareVideos[theme] || !beschikbareVideos[theme][level] || beschikbareVideos[theme][level].length === 0) {
-            input.disabled = true;
-            input.classList.add('themes-form__checkbox--disabled');
-        } else {
+        if (isLevelAvailable){
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.id = checkboxId;
+            input.name = theme;
+            input.value = level;
+            input.className = 'themes-form__checkbox';
+
             input.addEventListener('change', handleCheckboxChange);
-            input.classList.add('themes-form__checkbox--enabled');
-            const levelLabel = document.createElement('label');
-            levelLabel.htmlFor = input.id;
-                levelLabel.textContent = ""; //hier stond level
 
-            themeDiv.appendChild(input);
-            themeDiv.appendChild(levelLabel);
-        }
-
-        
+            const label = document.createElement('label');
+            label.htmlFor = checkboxId;
+            label.className = 'themes-form__checkbox-label';
+            label.textContent = "";
+            
+            levelCheckboxContainer.appendChild(input);
+            levelCheckboxContainer.appendChild(label);
+        }      
     });
+    // voeg de level checboxes en het icoontje toe aan de controls -- is nog steeds per rij 
+    themeControlsContainer.appendChild(levelCheckboxContainer);
+    const iconLabel = document.createElement('label');
 
-    fragment.appendChild(themeDiv);
+    //geen selectall dus de eerste
+    const firstCheckbox = levelCheckboxContainer.querySelector('.themes-form__checkbox');
+
+    if (firstCheckbox) iconLabel.htmlFor = firstCheckbox.id;
+
+    iconLabel.className = 'themes-form__icon-label';
+    themeControlsContainer.appendChild(iconLabel);
+
+    themeRow.appendChild(themeControlsContainer);
+    fragment.appendChild(themeRow);
 });
 
 form.appendChild(fragment);
