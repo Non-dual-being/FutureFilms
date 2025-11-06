@@ -36,6 +36,7 @@
     --spacing-smd: 10px;
     --spacing-md: 16px;
     --spacing-lg: 24px;
+    --spacing-xlg: 32px;
 
     /*letter-space*/
     --space-letter-lg: 0.08em;
@@ -46,12 +47,26 @@
     --font-size-label: clamp(15px, 1.1vw, 18px);
     --font-size-h2: clamp(18px, 2vw, 24px);
 
+    --font-size-checkbox--icon: 14px;
+
 
     /**-------------[ Borders ]------------*/
     --border-radius-sm: 5px;
+    --border-radius-smd: 8px;
     --border-radius-md: 10px;
     --border-radius-lg: 15px;
     --border-standard: 3px solid var(--color-primary-white--border);
+
+    --border-size-lg: 4px;
+
+    --vh: 100dvh;
+
+    /**height - width **/
+    --height-max: 900px;
+    --width-max: 1600px;
+
+    --checkbox-dimensions: 24px;
+    --checkbox-dimensions--bigger: 28px;
 
 }
 
@@ -74,7 +89,21 @@
     --selection-border-color--main--semiTans: rgba(48, 72, 120, 0.5);
     --selection-bg-mainContainer: rgba(255, 255, 255, 0.8);
     --selection-bg-mainContainer--trans: rgba(255, 255, 255, 0.7);
+  
 
+    /**---->>checkbox*/
+    /*default*/
+    --selection-checkbox-bg-color-main: #304878c7;
+    --selection-checkbox-border-color-main: rgba(255, 255, 255, 0.95);
+    --selection-checkbox-border-color-accent--warm: rgba(245, 245, 245, 0.95);
+    
+
+    /*hover*/
+    --selection-checkbox-border-color-main--hover:rgba(255, 255, 255, 1);
+    --selection-checkbox-bg-color-main--hover: #3ea6ea;
+    --selection-checkbox-shadow-outsidecolor: var(--selection-bg-mainContainer--trans);
+    --selection-checkbox-shadow-insidecolor: rgba(255, 255, 255, 0.15);
+    
 
     /**size*/
     --selection-font-size-introText--h2---mobile: clamp(16px, 1.7vw, 1.2rem);
@@ -93,6 +122,12 @@
     --form-box-shaduw--blueaccent: 0 0 18px 2px var(--form-box-shadow-color--blue-accent);
     --form-box-shaduw--blueaccent---border: 0 0 18px var(--form-box-shadow-color--blue-accent);
     --form-box-shadow-darkblue--inset: 0 0 20px 1px var(--selection-bg-text-color-lightBlueShade);
+
+    /**-->>checkbox*/
+    --form--checkbox-shadouw-hover-main: 
+            0 0 2px 1px var(--selection-checkbox-shadow-outsidecolor),
+            inset 0 0 10px 2px var(--selection-checkbox-shadow-insidecolor);
+
 
 
     /*
@@ -116,8 +151,7 @@
 
 
     /**dynamic heigt*/
-    --vh: 100dvh;
-
+     --vh: 100dvh;
 
 }
 
@@ -137,7 +171,7 @@
 
     /* Vertel de browser dat dit een dark scheme is */
     color-scheme: dark;
-    --vh: 100dvh;
+    --vh:  100dvh;
 }
 
 

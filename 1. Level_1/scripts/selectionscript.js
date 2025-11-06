@@ -107,7 +107,11 @@ const beschikbareVideos = {
 
 const {
     displayNone,
-    loaderHidden
+    loaderHidden,
+    extra,
+    checkboxAllChecked,
+    checkboxSomeChecked,
+    checkboxNoneChecked
     
 } = CSSVARS;
 
@@ -126,6 +130,21 @@ function updateDisabledClass(){
          startContentContainer.remove('has-disabled', 'show-tooltip');
     }
 
+}
+
+const getLabelId = (theme) => {
+    const themeData = beschikbareVideos[theme];
+
+    if (!themeData) return null;
+
+    const levels = Object.keys(themeData);
+
+    if (!levels.length) return null;
+
+    const levelString = levels.join("");
+
+    return `${theme}${levelString}`;
+    
 }
 
 function handlePageLoad() {
@@ -189,6 +208,9 @@ function addLevelToggleHoverListeners() {
 }
 
 function showHoverMessage(message, element) {
+    if (element.classList.contains('themes-form__checkbox')){
+        return;
+    }
     let hoverMessageElement = document.querySelector('.hover-message');
     if (!hoverMessageElement) {
         hoverMessageElement = document.createElement('div');
@@ -215,6 +237,50 @@ function hideHoverMessage() {
 }
 
 function handleCheckboxChange(event) {
+    const updateSelectorIcon = (selected, number) => {
+
+        const selectorRow = document.getElementById('level-selector-row');
+        if (!selectorRow) return;
+
+        const iconLabel = selectorRow.querySelector('#levelSelectorCheckBoxLabel');
+
+        if (!iconLabel) return;
+
+        console.log(iconLabel.classList);
+
+        if (selected && number < MAX_SELECTION) {
+
+            iconLabel.classList.remove(checkboxAllChecked);
+            iconLabel.classList.remove(checkboxNoneChecked);
+
+            if (!iconLabel.classList.contains(checkboxSomeChecked)){
+                iconLabel.classList.add(checkboxSomeChecked);
+            }
+            return;
+
+        } else if (selected && number === MAX_SELECTION) {
+            iconLabel.classList.remove(checkboxSomeChecked);
+            iconLabel.classList.remove(checkboxNoneChecked);
+
+            if (!iconLabel.classList.contains(checkboxAllChecked)){
+                iconLabel.classList.add(checkboxAllChecked);
+            }
+            return;
+           
+        } else if (!selected) {
+            iconLabel.classList.remove(checkboxSomeChecked);
+            iconLabel.classList.remove(checkboxAllChecked);
+
+             if (!iconLabel.classList.contains(checkboxNoneChecked)){
+                iconLabel.classList.add(checkboxNoneChecked);
+            }
+            return;
+
+        }
+        return;
+    }
+
+
     const { id, checked } = event.target;
 
     if (checked) {
@@ -233,6 +299,8 @@ function handleCheckboxChange(event) {
     } else {
         selectedCheckboxes = selectedCheckboxes.filter(selectedId => selectedId !== id);
     }
+
+    updateSelectorIcon(Boolean(selectedCheckboxes.length > 0), Number(selectedCheckboxes.length));
 
     if (selectedCheckboxes.length < MIN_SELECTION){
         startQuizButton.disabled = true;
@@ -278,6 +346,22 @@ function showWarningMessage(message) {
 
 function isLevelAvailable(level) {
         return THEMES.every(theme => beschikbareVideos[theme] && beschikbareVideos[theme][level] && beschikbareVideos[theme][level].length > 0);
+}
+
+const getSelectorLabelId = () => {
+    let levels = "";
+    LEVELS.forEach((level) => {
+        if (isLevelAvailable(level)) {
+            levels.concat(`niv${level}`)
+        }
+    })
+
+    if (levels !== "") {
+        return { 
+            'id' : `levelSelector${levels}`,
+            'levels' : levels
+        };
+    } else return null;
 }
 
 
@@ -412,12 +496,25 @@ const fragment = document.createDocumentFragment();
 //main div levelSelector
 const levelSelectorRow = document.createElement('div');
 levelSelectorRow.className = 'themes-form__row themes-form__row--level-selector'; 
+levelSelectorRow.id = 'level-selector-row';
 
 //label for levelselector
 const levelSelectorLabel = document.createElement('label');
 levelSelectorLabel.className = 'themes-form__label';
+levelSelectorLabel.htmlFor = getSelectorLabelId()?.id ?? 'levelSelector';
 levelSelectorLabel.textContent = 'Selector';
+
+const levelSelectorHiddenInput = document.createElement('input');
+levelSelectorHiddenInput.type = 'hidden';
+levelSelectorHiddenInput.id = getSelectorLabelId()?.id ?? 'levelSelector';
+levelSelectorHiddenInput.name = 'levelSelectorInput';
+levelSelectorHiddenInput.value = getSelectorLabelId()?.levels ?? "";
+levelSelectorHiddenInput.className = "d-none";
+
+
 levelSelectorRow.appendChild(levelSelectorLabel);
+levelSelectorRow.appendChild(levelSelectorHiddenInput);
+
 
 //container voor de controls (checkbox inputs)
 const levelTogglesContainer = document.createElement('div');
@@ -445,6 +542,16 @@ LEVELS.forEach(level => {
     levelTogglesContainer.appendChild(input);
     levelTogglesContainer.appendChild(label);};
 });
+
+const iconLabelLevelSelector = document.createElement('label');
+iconLabelLevelSelector.className = 'themes-form__icon-label checkbox-none-checked extra3 extra2 extra1';
+iconLabelLevelSelector.id = 'levelSelectorCheckBoxLabel';
+
+const firstCheckboxLevelSelector = levelTogglesContainer.querySelector('input') ?? null;
+if (firstCheckboxLevelSelector) iconLabelLevelSelector.htmlFor = firstCheckboxLevelSelector.id;
+
+levelTogglesContainer.appendChild(iconLabelLevelSelector);
+
 levelSelectorRow.appendChild(levelTogglesContainer);
 fragment.appendChild(levelSelectorRow);
 
@@ -459,7 +566,17 @@ THEMES.forEach((theme) => {
     //hoofdlabel met naam van het thema
     const label = document.createElement('label');
     label.textContent = theme;
+    label.htmlFor = getLabelId(theme) ?? theme;
     themeRow.appendChild(label);
+
+    const labelHiddenInput = document.createElement('input');
+    labelHiddenInput.type = 'hidden';
+    labelHiddenInput.id =  getLabelId() ?? theme;
+    labelHiddenInput.name = 'labelHiddenThemeInput';
+    labelHiddenInput.value = getLabelId() ?? theme;
+    labelHiddenInput.className = "d-none";
+
+    themeRow.appendChild(labelHiddenInput);
 
     const themeControlsContainer = document.createElement('div');
     themeControlsContainer.className = 'themes-form__controls';

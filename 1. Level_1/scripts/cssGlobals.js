@@ -24,11 +24,15 @@ window.addEventListener('orientationchange', setVhVar);
 
 export const CSSUTILS = {
     'displayNone' : 'd-none',
-    'displayFlex' : 'd-flex'
+    'displayFlex' : 'd-flex',
+    'extra' : 'extra'
 }
 
 export const CSSSTATES = {
-    'loaderHidden' : 'loading-screen--hidden'
+    'loaderHidden' : 'loading-screen--hidden',
+    'checkboxSomeChecked' : 'checkbox-some-checked',
+    'checkboxAllChecked' : 'checkbox-all-checked',
+    'checkboxNoneChecked' : 'checkbox-none-checked',
 }
 
 const CSSVARS = {
