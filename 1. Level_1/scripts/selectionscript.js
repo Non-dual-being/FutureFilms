@@ -18,6 +18,7 @@ const MAX_SELECTION = 8;
 const MIN_SELECTION = 2;
 const startQuizButton = document.getElementById('StartQuizknop');
 const startContentContainer = document.querySelector('.start-knop-content');
+const downloadButton = document.getElementById('Downloadknop');
 
 
 let selectedCheckboxes = [];
@@ -349,19 +350,21 @@ function isLevelAvailable(level) {
 }
 
 const getSelectorLabelId = () => {
+    let parts = [];
     let levels = "";
+
     LEVELS.forEach((level) => {
         if (isLevelAvailable(level)) {
-            levels.concat(`niv${level}`)
+            parts.push(`niv${level}`)
         }
     })
 
-    if (levels !== "") {
-        return { 
-            'id' : `levelSelector${levels}`,
-            'levels' : levels
-        };
-    } else return null;
+    if (parts.length) levels = parts.join("");
+
+    return { 
+        'id' : `levelSelector${levels}`,
+        'levels' : levels
+    };
 }
 
 
@@ -501,12 +504,12 @@ levelSelectorRow.id = 'level-selector-row';
 //label for levelselector
 const levelSelectorLabel = document.createElement('label');
 levelSelectorLabel.className = 'themes-form__label';
-levelSelectorLabel.htmlFor = getSelectorLabelId()?.id ?? 'levelSelector';
+levelSelectorLabel.htmlFor = getSelectorLabelId()?.levels ?? 'levelSelector';
 levelSelectorLabel.textContent = 'Selector';
 
 const levelSelectorHiddenInput = document.createElement('input');
 levelSelectorHiddenInput.type = 'hidden';
-levelSelectorHiddenInput.id = getSelectorLabelId()?.id ?? 'levelSelector';
+levelSelectorHiddenInput.id = `hidden${getSelectorLabelId()?.levels}` ?? 'levelSelector';
 levelSelectorHiddenInput.name = 'levelSelectorInput';
 levelSelectorHiddenInput.value = getSelectorLabelId()?.levels ?? "";
 levelSelectorHiddenInput.className = "d-none";
@@ -571,7 +574,7 @@ THEMES.forEach((theme) => {
 
     const labelHiddenInput = document.createElement('input');
     labelHiddenInput.type = 'hidden';
-    labelHiddenInput.id =  getLabelId() ?? theme;
+    labelHiddenInput.id =  `hidden${getLabelId()}` ?? theme;
     labelHiddenInput.name = 'labelHiddenThemeInput';
     labelHiddenInput.value = getLabelId() ?? theme;
     labelHiddenInput.className = "d-none";
@@ -707,6 +710,7 @@ allCheckboxes.forEach(checkbox => {
     });
 });
 
+downloadButton.addEventListener('click', downloadPDF);
 
 
 document.addEventListener('wheel', function (event) {

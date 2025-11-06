@@ -1,0 +1,155 @@
+/* ============================================= */
+/*          VIDEOPLAYER: BASIS & LAYOUT          */
+/* ============================================= */
+
+body.videoPlayer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #0c0c14; /* Donkere 'space' achtergrond */
+    background-image: url('./../assets/achtergrond_videoplayer_1.png');
+    background-size: cover;
+    background-position: center;
+    padding: var(--spacing-sm);
+    overflow: hidden;
+}
+
+/* De 'Artboard' container die alles omhult en centreert */
+.video-artboard {
+    display: grid; /* We gebruiken GRID voor de hoofdlayout! */
+    position: relative;
+    width: 100%;
+    height: 100%;
+    
+    max-width: 1800px;
+    max-height: 1024px;
+  
+    
+    background: rgba(10, 10, 20, 0.2);
+    box-shadow: 0 0 40px rgba(0, 183, 255, 0.2);
+    border: 1px solid rgba(0, 183, 255, 0.2);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+}
+
+/* De containers voor de video en de controls */
+.video-player, .future-controls {
+    padding: var(--spacing-md);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+video 
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Zorgt dat de video perfect past */
+    border-radius: var(--border-radius-sm);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* De knoppen onderaan */
+.action-buttons {
+    position: absolute;
+    bottom: var(--spacing-md);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: var(--spacing-md);
+    z-index: 10;
+}
+
+/* ============================================= */
+/*          FUTURISTISCHE CONTROLS               */
+/* ============================================= */
+
+.future-controls {
+    /* "Glassmorphism" effect */
+    background: rgba(20, 30, 55, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 183, 255, 0.2);
+    border-radius: var(--border-radius-md);
+    box-shadow: inset 0 0 20px rgba(0, 183, 255, 0.1);
+    
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+}
+
+.future-controls__title {
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    color: var(--color-primary-white--text---main);
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px var(--color-accent-blue--bg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid rgba(0, 183, 255, 0.3);
+    width: 100%;
+    text-align: center;
+}
+
+.future-controls .customButton {
+    /* ... je bestaande .customButton stijl ... */
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.future-controls .customButton:hover {
+    border-color: var(--color-accent-blue--bg);
+    box-shadow: 0 0 15px var(--color-accent-blue--bg);
+    transform: translateY(-2px);
+}
+
+/* ============================================= */
+/*          MEDIA QUERIES (Mobile-First)         */
+/* ============================================= */
+
+/* --- 1. Mobiele Layout (tot 768px) --- */
+@media (max-width: 768px) {
+    .video-artboard {
+        /* Stapel alles verticaal */
+        grid-template-rows: 1fr auto auto; /* Video | Controls | Ruimte voor knoppen */
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "video"
+            "controls"
+            "actions";
+    }
+    .video-player { grid-area: video; }
+    .future-controls { 
+        grid-area: controls; 
+        flex-direction: row; /* Knoppen naast elkaar op een smalle balk */
+        justify-content: space-around;
+        padding: var(--spacing-sm);
+    }
+    .future-controls__title { display: none; } /* Titel verbergen op mobiel */
+    .action-buttons { grid-area: actions; position: relative; transform: none; left: auto; padding-top: var(--spacing-md); }
+}
+
+/* --- 2. Tablet Layout (769px tot 1199px) --- */
+@media (min-width: 769px) {
+    .video-artboard {
+        /* Sidebar layout */
+        grid-template-columns: auto 1fr; /* Controls nemen hun eigen breedte, video vult de rest */
+        grid-template-rows: 1fr auto;
+        grid-template-areas: 
+            "controls video"
+            "actions actions";
+        gap: var(--spacing-md);
+        padding: var(--spacing-md);
+    }
+    .video-player { grid-area: video; }
+    .future-controls { grid-area: controls; }
+    .action-buttons { grid-area: actions; position: absolute; bottom: var(--spacing-md); }
+}
+
+/* --- 3. Desktop Layout (1200px en groter) --- */
+@media (min-width: 1200px) {
+    .video-artboard {
+        /* Ruimere sidebar */
+        grid-template-columns: clamp(280px, 20vw, 350px) 1fr; /* Flexibele sidebar breedte */
+        gap: var(--spacing-lg);
+        padding: var(--spacing-lg);
+    }
+}

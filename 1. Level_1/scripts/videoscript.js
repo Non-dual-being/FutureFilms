@@ -2,7 +2,10 @@ window.onload = function() {
     speelVideos();
 };
 
-
+const videoPlayer = document.getElementById('videoPlayer');
+const playBtn = document.getElementById('playButton');
+const pauzeBtn =   document.getElementById('pauseButton');
+const fullScreenBtn = document.getElementById('fullscreenButton')
 
 function speelVideos(shuffle = false, isIntro = true) {
     let videoLijst = JSON.parse(localStorage.getItem('videoLijst')) || [];
@@ -26,7 +29,6 @@ function speelVideos(shuffle = false, isIntro = true) {
     }
 
     if (videoLijst.length > 0) {
-        const videoPlayer = document.getElementById('videoPlayer');
         const source = document.createElement('source');
         source.setAttribute('src', `./videos/${videoLijst[0]}`);
         source.setAttribute('type', 'video/mp4');
@@ -57,16 +59,16 @@ function speelVideos(shuffle = false, isIntro = true) {
         console.log("Geen video's beschikbaar om te spelen.");
     }
 
-    document.getElementById('playButton').addEventListener('click', function() {
-        document.getElementById('videoPlayer').play();
+    playBtn.addEventListener('click', function() {
+        videoPlayer.play();
     });
 
-    document.getElementById('pauseButton').addEventListener('click', function() {
-        document.getElementById('videoPlayer').pause();
+    pauzeBtn.addEventListener('click', function() {
+        videoPlayer.pause();
     });
 
-    document.getElementById('fullscreenButton').addEventListener('click', function() {
-        document.getElementById('videoPlayer').requestFullscreen();
+    fullScreenBtn.addEventListener('click', function() {
+       videoPlayer.requestFullscreen();
     });
 }
 
