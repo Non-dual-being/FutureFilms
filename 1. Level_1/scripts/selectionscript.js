@@ -478,7 +478,7 @@ function opslaanGeselecteerdeVideos(selectedThemes) {
 
 function downloadPDF() {
     var pdfLink = document.createElement('a');
-    pdfLink.href = './../assets/spelbord_future_films.pdf';
+    pdfLink.href = './assets/spelbord_future_films.pdf';
     pdfLink.download = 'spelbord_future_films.pdf';
     pdfLink.target = '_blank';
     document.body.appendChild(pdfLink);

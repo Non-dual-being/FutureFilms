@@ -7,6 +7,7 @@
     from {
         transform: translate(-50%, -50%) rotate(0deg);
     }
+
     to {
         transform: translate(-50%, -50%) rotate(360deg);
     }
@@ -22,7 +23,7 @@
 body.futurefilms {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     min-height: 100vh;
     min-width: 100vw;
@@ -39,58 +40,157 @@ body.futurefilms {
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    position: relative; /* Essentieel voor de positionering van header/footer */
+    position: relative;
+    /* Essentieel voor de positionering van header/footer */
     width: 100%;
-    height: 100%; /* Vul standaard de hoogte van het scherm */
+    height: 100%;
+    /* Vul standaard de hoogte van het scherm */
 
-    
+
     /* Dit is de kern van je vraag: de maximale afmetingen */
-    max-width: var(--width-max); /* Een verstandige maximale breedte voor desktops */
-    max-height: var(--height-max); /* De maximale hoogte die je wilde */
+    max-width: var(--width-max);
+    /* Een verstandige maximale breedte voor desktops */
+    max-height: var(--height-max);
+    /* De maximale hoogte die je wilde */
 
     background-image: url('../assets/achtergrond_FutureFilms_selectionpage.png');
     background-position: top center;
     background-repeat: repeat-y;
     /* herhaal alleen verticaal */
     background-size: 300vw auto;
-    overflow: hidden; /* Zorgt dat niets buiten de container kan komen */
-    
+    overflow: hidden;
+    /* Zorgt dat niets buiten de container kan komen */
+
 
     /* Optioneel: een subtiele rand of schaduw om het 'canvas' af te bakenen */
- 
+
 }
 
-.app-container header, .app-container footer {
+.app-container header,
+.app-container footer {
     width: 100%;
     height: auto;
     display: flex;
     background-color: var(--color-primary-blue--bg---dark);
     color: var(--color-primary-white--text---main);
     text-align: center;
-    position: absolute; /**fixed werkt niet, dat is altijd viewport*/
+    position: absolute;
+    /**fixed werkt niet, dat is altijd viewport*/
     z-index: 100;
 }
 
 .app-container header {
     top: 0;
     left: 0;
- 
-
     bottom: auto;
-    padding: 10px 0;
+    padding:0;
     /*[top down] - [left right] */
     max-width: var(--width-max);
-
     height: var(--selection-header-h);
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     overflow: hidden;
-    letter-spacing: var(--space-letter-xlg);
+    color: var(--color-primary-white--text---main);
+   
 
 }
 
+.header-track {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    /*neem links als rechts evenveel ruimte in zoden de collum 2 precies midden is los van inhoud*/
+    align-items: center;
+    width: 100%;
+    max-width: var(--width-max);
+    margin: 0 auto; /*top down left right*/
+    height: 100%;
+}
+
+.header-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.header-slot--left {
+    justify-content: flex-start;
+}
+
+.header-slot--right {
+    display: none;
+    justify-content: flex-end;
+    padding-right: clamp(var(--spacing-md), 2vw, var(--spacing-lg));
+}
+
+.header-title {
+    grid-column: 2;
+    margin: 0;
+    text-align: center;
+    letter-spacing: var(--space-letter-xlg);
+    text-shadow:
+        0 1px 0 rgba(0,0,0,0.35),
+        0 2px 8px rgba(0,0,0,0.35),
+        0 0 12px rgba(255,255,255,0.06);
+}
+
+.header-download-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    letter-spacing: var(--space-letter-xlg);
+
+    background-color: transparent;
+    color: var(--color-primary-white--text---main);
+    font-family: 'DarkForest', 'sans-serif';
+    font-size: var(--font-size-base);
+    text-decoration: none;
+    cursor: pointer;
+      /* alleen motion/shadow op interactie */
+    transition: transform 180ms ease, box-shadow 200ms ease;
+    will-change: transform;
+}
+
+
+
+/* Icoon volgt tekstkleur (wit) */
+.header-download-link .icon {
+  display: block;
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+
+}
+
+/* Hover/focus: geen kleurwissel; wel subtiele beweging en schaduw */
+.header-download-link:hover,
+.header-download-link:focus-visible {
+ transform: translateY(-1px) scale(1.04);
+  /* subtiele “futuristische” glow in jouw blauwtinten */
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.35),                           /* crisp rim */
+    0 4px 12px var(--form-box-shadow-color--main),             /* zachte diepte */
+    0 0 14px 3px var(--form-box-shadow-color--blue-accent),    /* blauwe gloed */
+    inset 0 0 6px var(--form-box-shadow-color--white-accent);  /* lichte inner glow */
+  border-radius: 6px;
+  padding: 0.2rem; /* vergroot hit-area licht bij hover */
+}
+
+/* Keyboard focus – als je wél een zichtbare ring wilt, voeg dan een lichte ring toe */
+.header-download-link:focus-visible {
+  /* optioneel i.p.v. transparent: outline: 2px solid rgba(255,255,255,0.6); */
+}
+
+/* Active: tik terug */
+.header-download-link:active {
+  transform: translateY(0) scale(1.0);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+
 .app-container footer {
     inset: auto 0 0 0;
+    bottom:0;
     /*shorthand top: auto, right: 0, bottom 0, left: 0*/
     display: flex;
     justify-content: center;
@@ -143,17 +243,13 @@ body.futurefilms {
     border-radius: var(--border-radius-md);
 
     background:
-      radial-gradient(
-        100% 140% at 30% 18%,
-        rgba(52, 152, 219, 0.14) 0%,
-        rgba(52, 152, 219, 0.00) 52%
-      ),
-      linear-gradient(
-        120deg,
-        rgba(255, 255, 255, 0.70) 0%,
-        rgba(248, 251, 255, 0.70) 50%,
-        rgba(255, 255, 255, 0.70) 100%
-      );
+        radial-gradient(100% 140% at 30% 18%,
+            rgba(52, 152, 219, 0.14) 0%,
+            rgba(52, 152, 219, 0.00) 52%),
+        linear-gradient(120deg,
+            rgba(255, 255, 255, 0.70) 0%,
+            rgba(248, 251, 255, 0.70) 50%,
+            rgba(255, 255, 255, 0.70) 100%);
 
     /* Iets kleinere ‘canvas’, dus accenten zijn dichterbij en duidelijker */
     background-size: 180% 180%, 160% 160%;
@@ -162,10 +258,10 @@ body.futurefilms {
     /* Beweging iets korter (rustig, maar merkbaar) */
     animation: bgDriftCalm 22s ease-in-out infinite;
 
-    
 
 
-      /* Rand-highlight voor definitie */
+
+    /* Rand-highlight voor definitie */
     border: 1px solid var(--selection-border-color--main--semiTans);
     /* 3. De nieuwe 'Glow' schaduw: evenwichtig en blauw */
     /* offset-x | offset-y | blur-radius | spread-radius | color */
@@ -182,7 +278,7 @@ body.futurefilms {
 /*rail + thumb*/
 .selection-main::-webkit-scrollbar {
     width: 6px;
-   
+
 }
 
 /*rail waar je overheen glijdt*/
@@ -246,8 +342,9 @@ body.futurefilms {
     justify-content: flex-start;
     width: 100%;
     height: auto;
-    box-shadow:  0px 0px 15px 2px var(--selection-bg-text-color-darkBlue);
-    
+    box-shadow: 0px 0px 15px 2px var(--selection-bg-text-color-darkBlue);
+    border-radius: var(--border-radius-md);
+
 }
 
 .intro-text h2 {
@@ -285,7 +382,7 @@ body.futurefilms {
     text-shadow: 1px 1px 2px var(--selection-bg-text-shadow-blue-trans--Sub);
 }
 
-.themes-form{
+.themes-form {
     display: flex;
     flex-direction: column;
     justify-content: end;
@@ -294,33 +391,32 @@ body.futurefilms {
     height: auto;
     padding: var(--spacing-sm);
     font-size: var(--font-size-base);
-    background: linear-gradient(to right, 
-        var(--color-primary-blue--bg---light) 50%, 
-        var(--color-primary-white--bg) 50%
-    );
+    background: linear-gradient(to right,
+            var(--color-primary-blue--bg---light) 50%,
+            var(--color-primary-white--bg) 50%);
     max-height: 550px;
     border-radius: var(--border-radius-sm);
     box-shadow: var(--form-box-shadow-darkblue--inset);
     border: 4px solid var(--color-primary-blue--bg---dark);
     flex-grow: 1;
-    
-    
+
+
 }
 
 .themes-form__row {
     display: flex;
     align-items: center;
     width: 100%;
-    justify-content: space-between; /*space in the middle*/
+    justify-content: space-between;
+    /*space in the middle*/
     padding: var(--spacing-sm) var(--spacing-xs);
     font-size: var(--font-size-label);
-    background: linear-gradient(to right, 
-        var(--color-primary-blue--bg---medium) 50%, 
-        rgba(232, 232, 232, 0.1) 40%,
-        rgba(255, 255, 255, 0) 50%, 
-        var(--color-accent-grey--bg) 80%
-    ),
-    url('./../assets/filmrol.webp');
+    background: linear-gradient(to right,
+            var(--color-primary-blue--bg---medium) 50%,
+            rgba(232, 232, 232, 0.1) 40%,
+            rgba(255, 255, 255, 0) 50%,
+            var(--color-accent-grey--bg) 80%),
+        url('./../assets/filmrol.webp');
     background-repeat: no-repeat, repeat-x;
     background-position: center, center;
     background-size: auto 110%;
@@ -336,23 +432,21 @@ body.futurefilms {
     border: 4px solid var(--color-primary-white--border--accent);
     box-shadow: var(--form-box-shadow-color--white-accent);
     background-image: linear-gradient(to right,
-             #33415C 50%,
-             #d8e2f0 50%
-    );
-    
+            #33415C 50%,
+            #d8e2f0 50%);
+
     transition: all 0.2 ease-in-out;
 }
 
 .themes-form__row--level-selector:hover {
     border-color: #c6d6e7;
-    background-image: linear-gradient(to right, 
-        #33415C 50%, 
-        #c6d6e7 50%
-    )
+    background-image: linear-gradient(to right,
+            #33415C 50%,
+            #c6d6e7 50%)
 }
 
 
-.themes-form__row label:first-of-type{
+.themes-form__row label:first-of-type {
     color: var(--color-primary-white--text---main);
     font-size: var(--font-size-label);
     cursor: default;
@@ -387,7 +481,7 @@ body.futurefilms {
     border: 2px solid var(--selection-checkbox-border-color-main);
     border-radius: var(--border-radius-sm);
     cursor: pointer;
-    transition: all 0.2 ease-out; 
+    transition: all 0.2 ease-out;
 }
 
 .themes-form__checkbox:not(:disabled):hover {
@@ -408,7 +502,7 @@ body.futurefilms {
     border: 3px solid var(--color-primary-blue--bg---dark);
 }
 
-.themes-form__checkbox:checked:active{
+.themes-form__checkbox:checked:active {
     transform: scale(1.5);
 }
 
@@ -416,10 +510,11 @@ body.futurefilms {
 
 /* De "waterdruppel" die verschijnt wanneer de checkbox is aangevinkt */
 .themes-form__checkbox:checked:not(:active)::after {
-    content: "\1F4A7"; /* Waterdruppel emoji */
+    content: "\1F4A7";
+    /* Waterdruppel emoji */
     color: var(--color-primary-blue--bg---dark);
     font-size: var(----font-size-checkbox--icon);
-    
+
     /* Het 'perfect centreren' trucje */
     position: absolute;
     top: 50%;
@@ -428,11 +523,12 @@ body.futurefilms {
 }
 
 .themes-form__checkbox:checked:active::after {
-    content: "\23FB"; /* Waterdruppel emoji */
+    content: "\23FB";
+    /* Waterdruppel emoji */
     color: var(--color-primary-blue--bg---dark);
     font-size: var(----font-size-checkbox--icon);
 
-    
+
     /* Het 'perfect centreren' trucje */
     position: absolute;
     top: 50%;
@@ -440,24 +536,25 @@ body.futurefilms {
     transform: translate(-50%, -50%);
 }
 
-.themes-form__checkbox:not(:checked):active::before{
+.themes-form__checkbox:not(:checked):active::before {
     content: "\25B6";
     color: var(--color-primary-blue--bg---dark);
     font-size: var(----font-size-checkbox--icon);
 
-    
+
     /* Het 'perfect centreren' trucje */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
-.themes-form__row--level-selector .themes-form__checkbox:not(:checked):active::after{
+
+.themes-form__row--level-selector .themes-form__checkbox:not(:checked):active::after {
     content: "\25B6";
     color: var(--color-primary-blue--bg---dark);
     font-size: var(----font-size-checkbox--icon);
 
-    
+
     /* Het 'perfect centreren' trucje */
     position: absolute;
     top: 50%;
@@ -476,7 +573,8 @@ body.futurefilms {
 
 
 .themes-form__row--level-selector .themes-form__checkbox {
-    border-radius: var(--border-radius-smd); /* Maakt de checkboxen in de selector-rij rond */
+    border-radius: var(--border-radius-smd);
+    /* Maakt de checkboxen in de selector-rij rond */
     border: var(--border-size-lg) solid var(--selection-checkbox-border-color-main);
     height: var(--checkbox-dimensions--bigger);
     width: var(--checkbox-dimensions--bigger);
@@ -488,42 +586,48 @@ body.futurefilms {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 200%; /* Groter dan de box zelf */
+    width: 200%;
+    /* Groter dan de box zelf */
     height: 200%;
-    
+
     /* De "radarstraal" gemaakt met een conic gradient */
-    background: conic-gradient(
-        transparent 0deg,
-        transparent 270deg,
-        var(--color-accent-blue--bg) 300deg, /* De kleur van de straal */
-        transparent 360deg
-    );
-    
+    background: conic-gradient(transparent 0deg,
+            transparent 270deg,
+            var(--color-accent-blue--bg) 300deg,
+            /* De kleur van de straal */
+            transparent 360deg);
+
     /* Start in het midden en onzichtbaar */
     transform-origin: center center;
     transform: translate(-50%, -50%) rotate(0deg);
     opacity: 0;
-    
+
     transition: opacity 0.3s ease;
-    
+
 }
 
 .themes-form__row--level-selector .themes-form__checkbox:not(:checked):not(:disabled):hover::before {
-    opacity: 1; /* Maak de radar zichtbaar */
-    animation: radar-sweep 1s linear infinite; /* Start de animatie */
+    opacity: 1;
+    /* Maak de radar zichtbaar */
+    animation: radar-sweep 1s linear infinite;
+    /* Start de animatie */
     scale: 1;
 }
 
 .themes-form__row--level-selector .themes-form__checkbox:not(:disabled):not(:checked):active {
-    transform: scale(1.05); /* Krimpt iets om de "klik" te simuleren */
+    transform: scale(1.05);
+    /* Krimpt iets om de "klik" te simuleren */
     background-color: var(--form-box-shadow-color--blue-accent);
-    transition-duration: 0.1s; /* Moet supersnel aanvoelen */
+    transition-duration: 0.1s;
+    /* Moet supersnel aanvoelen */
 }
 
 .themes-form__checkbox:not(:disabled)::not(:checked):active {
-    transform: scale(0.92); /* Krimpt iets om de "klik" te simuleren */
+    transform: scale(0.92);
+    /* Krimpt iets om de "klik" te simuleren */
     background-color: var(--color-primary-blue--bg---light);
-    transition-duration: 0.1s; /* Moet supersnel aanvoelen */
+    transition-duration: 0.1s;
+    /* Moet supersnel aanvoelen */
 }
 
 
@@ -538,20 +642,25 @@ body.futurefilms {
 .themes-form__checkbox-label {
     display: none;
 }
+
 /* De nummers in de level selector moeten wit zijn */
 .themes-form__row--level-selector .themes-form__checkbox-label {
     color: var(--color-primary-white--text---main);
 }
 
 .themes-form__row--level-selector .themes-form__label::after {
-    content: "⚙️"; /* Default: 'in progress' icoon (gear) */
+    content: "⚙️";
+    /* Default: 'in progress' icoon (gear) */
     font-size: 18px;
-    color: var(--color-primary-white--text---main); /* Wit, past bij de donkere achtergrond */
+    color: var(--color-primary-white--text---main);
+    /* Wit, past bij de donkere achtergrond */
     display: inline-block;
-    width: 1.5em; /* Iets meer ruimte */
+    width: 1.5em;
+    /* Iets meer ruimte */
     text-align: center;
     margin-left: var(--spacing-md);
-    transition: content 0.2s ease-in-out; /* Subtiele animatie bij wisselen */
+    transition: content 0.2s ease-in-out;
+    /* Subtiele animatie bij wisselen */
 }
 
 
@@ -559,13 +668,15 @@ body.futurefilms {
     font-size: 18px;
     color: var(--color-primary-blue--bg---dark);
     display: inline-block;
-    width: 1.2em; /* Vaste breedte om verspringen van layout te voorkomen */
+    width: 1.2em;
+    /* Vaste breedte om verspringen van layout te voorkomen */
     text-align: center;
     cursor: pointer;
 }
 
 .themes-form__icon-label:hover {
-    transform: blur-radius(1.05); /* Speels hover-effect */
+    transform: blur-radius(1.05);
+    /* Speels hover-effect */
 }
 
 
@@ -578,18 +689,21 @@ body.futurefilms {
 /* Gebruik :has() om het icoon te bepalen op basis van de staat van de checkbox in de rij */
 /* Dit is de modernste en meest robuuste methode */
 .themes-form__row:has(.themes-form__checkbox:checked) .themes-form__icon-label::after {
-    content: "🎬"; /* Filmklapper */
+    content: "🎬";
+    /* Filmklapper */
 }
 
 .themes-form__row:has(.themes-form__checkbox:not(:checked)) .themes-form__icon-label::after {
-    content: "🎞️"; /* Zandloper */
+    content: "🎞️";
+    /* Zandloper */
 }
 
 .themes-form__row:has(.themes-form__checkbox:disabled) .themes-form__icon-label::after {
-    content: "🔒"; /* Slotje voor disabled */
+    content: "🔒";
+    /* Slotje voor disabled */
 }
 
- .themes-form__icon-label.extra3.extra2.extra1.checkbox-some-checked::after {
+.themes-form__icon-label.extra3.extra2.extra1.checkbox-some-checked::after {
     content: "🎞️";
 }
 
@@ -598,67 +712,70 @@ body.futurefilms {
 }
 
 .themes-form__icon-label.extra3.extra2.extra1.checkbox-none-checked::after {
-     content: "👉"; 
+    content: "👉";
 }
 
 
 
-.downloadContainer{
+.downloadContainer {
     display: none;
 }
 
 
 /* basisstaat tooltip (onzichtbaar, maar aanwezig) */
 .start-knop-content.has-disabled::before {
-  content: attr(data-info-disabled-tip);
-  position: absolute;
-  top: -50px;
-  left: 50%;
-  background: linear-gradient(135deg, #4fc3f7, #81d4fa, #aed581);
-  color: #083344; 
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
-  font-weight: 600;
-  font-size: clamp(0.9rem, 1.4vw, 1rem);
-  padding: 0.8em 1em;
-  border-radius: 10px;
-  border: 2px solid #ffffff;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,.25);
-  white-space: normal;
-  overflow-wrap: break-word;
-  display: inline-block;
-  width: max-content;     /* ✅ voorkomt dat hij altijd 100% breed wordt */
-  max-width: 500px;
-  z-index: 10;
+    content: attr(data-info-disabled-tip);
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    background: linear-gradient(135deg, #4fc3f7, #81d4fa, #aed581);
+    color: #083344;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+    font-size: clamp(0.9rem, 1.4vw, 1rem);
+    padding: 0.8em 1em;
+    border-radius: 10px;
+    border: 2px solid #ffffff;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
+    white-space: normal;
+    overflow-wrap: break-word;
+    display: inline-block;
+    width: max-content;
+    /* ✅ voorkomt dat hij altijd 100% breed wordt */
+    max-width: 500px;
+    z-index: 10;
 
-  opacity: 0;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
 }
 
 /* pijltje */
 .start-knop-content.has-disabled::after {
-  content: '';
-  position: absolute;
-  left: 15px;
-  top: -14px;
-  width: 0; height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 8px solid #81d4fa;
-  z-index: 10;
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: -14px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #81d4fa;
+    z-index: 10;
 
-  opacity: 0;                 /* start */
-  transform: translateY(-5px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  pointer-events: none;
+    opacity: 0;
+    /* start */
+    transform: translateY(-5px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
 }
 
 /* toon tooltip bij hover (JS voegt .show-tooltip toe) */
 .start-knop-content.has-disabled.show-tooltip::before,
 .start-knop-content.has-disabled.show-tooltip::after {
-  opacity: 1;
-  transform: translateX(-50%);
+    opacity: 1;
+    transform: translateX(-50%);
 }
 
 
@@ -688,11 +805,12 @@ body.futurefilms {
     border-radius: 7px;
     background-image: linear-gradient(to right, #152036c0 0%, #304878 100%);
     background-size: 250% 250%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Hover-effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    /* Hover-effect */
 }
 
 
-.StartQuizknop:disabled{
+.StartQuizknop:disabled {
     cursor: default;
 }
 
@@ -700,13 +818,11 @@ body.futurefilms {
 
 /* Extra vrolijke hover voor disabled */
 .StartQuizknop:disabled:hover {
-    background: repeating-linear-gradient(
-        -45deg,
-        #b3e5fc,
-        #b3e5fc 12px,
-        #81d4fa 12px,
-        #81d4fa 24px
-    );
+    background: repeating-linear-gradient(-45deg,
+            #b3e5fc,
+            #b3e5fc 12px,
+            #81d4fa 12px,
+            #81d4fa 24px);
     color: #004d40;
     text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.9);
     transform: scale(1.02) rotate(-1deg);
@@ -729,13 +845,15 @@ body.futurefilms {
 
 /* Fallback voor oudere browsers die :has() niet ondersteunen */
 @supports not selector(:has(a)) {
-    .themes-form__checkbox:checked + .themes-form__checkbox-label + .themes-form__icon-label::after {
+    .themes-form__checkbox:checked+.themes-form__checkbox-label+.themes-form__icon-label::after {
         content: "🎬";
     }
-    .themes-form__checkbox:not(:checked) + .themes-form__checkbox-label + .themes-form__icon-label::after {
+
+    .themes-form__checkbox:not(:checked)+.themes-form__checkbox-label+.themes-form__icon-label::after {
         content: "⏳";
     }
-    .themes-form__checkbox:disabled + .themes-form__checkbox-label + .themes-form__icon-label::after {
+
+    .themes-form__checkbox:disabled+.themes-form__checkbox-label+.themes-form__icon-label::after {
         content: "🔒";
     }
 
@@ -767,20 +885,23 @@ body.futurefilms {
 
 @media (min-width: 768px) {
 
-    .app-container{
+    body.futurefilms {
+        justify-content: center;
+    }
+
+    .app-container {
         background-position: top center;
         background-repeat: no-repeat;
         /* herhaal alleen verticaal */
         background-size: cover;
-        
+
     }
 
-    .selection-main{
-        scrollbar-color:  var(--selection-border-color--main--semiTans) transparent;
+    .selection-main {
+        scrollbar-color: var(--selection-border-color--main--semiTans) transparent;
         width: 100%;
         max-width: 600px;
         border: 6px solid var(--color-primary-blue--bg---light)
-
     }
 
 
@@ -798,22 +919,20 @@ body.futurefilms {
         background-color: var(--selection-border-color--main--subtleTrans);
     }
 
-    .selection-main{
+    .selection-main {
 
         background:
             /* Accentlaag: brede, zachte blauwe veeg */
-            radial-gradient(
-            120% 160% at 20% 10%,
-            rgba(52, 152, 219, 0.12) 0%,   /* accentblauw heel licht */
-            rgba(52, 152, 219, 0.00) 55%
-            ),
-        /* Hoofdlaag: bijna wit, subtiele koel-warme variatie */
-        linear-gradient(
-            120deg,
-            rgba(255, 255, 255, 0.92) 0%,
-            rgba(248, 251, 255, 0.92) 50%,  /* koel wit */
-            rgba(255, 255, 255, 0.92) 100%
-        );
+            radial-gradient(120% 160% at 20% 10%,
+                rgba(52, 152, 219, 0.12) 0%,
+                /* accentblauw heel licht */
+                rgba(52, 152, 219, 0.00) 55%),
+            /* Hoofdlaag: bijna wit, subtiele koel-warme variatie */
+            linear-gradient(120deg,
+                rgba(255, 255, 255, 0.92) 0%,
+                rgba(248, 251, 255, 0.92) 50%,
+                /* koel wit */
+                rgba(255, 255, 255, 0.92) 100%);
 
         /* Grotere, rustige beweging (geen flikkering) */
         background-size: 220% 220%, 180% 180%;
@@ -822,22 +941,35 @@ body.futurefilms {
 
     }
 
-    .themes-form, .intro-text {
+    .themes-form,
+    .intro-text {
         max-width: 500px;
     }
 
-
+    .header-slot--right {
+        display: flex;
+    }
 
 }
 
-@media (min-height: 840px) and (min-width: 1420px) {
+@media (min-height: 700px) and (min-width: 1420px) {
+
+    .app-container header h2 {
+        display: none;
+    }
+
+
     .downloadContainer {
         position: absolute;
-        bottom: 235px; /* Ensures the div stands slightly higher from the bottom, depending on the screen size */
-        left: 175px; /* Ensures the div comes a bit to the right from the left side, depending on the screen size */
+        bottom: 235px;
+        /* Ensures the div stands slightly higher from the bottom, depending on the screen size */
+        left: 175px;
+        /* Ensures the div comes a bit to the right from the left side, depending on the screen size */
         top: auto;
-        padding: var(--spacing-md); /* Optional, for extra space within the div */
-        z-index: 1; /* Ensures the div is not covered by other elements */
+        padding: var(--spacing-md);
+        /* Optional, for extra space within the div */
+        z-index: 1;
+        /* Ensures the div is not covered by other elements */
         display: flex;
     }
 
@@ -862,12 +994,17 @@ body.futurefilms {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
         border: none;
     }
+
+    .header-download-link{
+        display: none;
+    }
 }
 
 @media (min-height: 901px) and (min-width: 1601px) {
-    .app-container{
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Lichte gloed */
-            box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.5);
+    .app-container {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        /* Lichte gloed */
+        box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.5);
 
     }
 
